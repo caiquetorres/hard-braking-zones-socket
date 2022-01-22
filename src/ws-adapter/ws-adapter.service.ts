@@ -19,11 +19,11 @@ export class WsAdapterService {
   ) {}
 
   handleOnConnect() {
-    return void 0
+    return {}
   }
 
   handleOnDisconnect() {
-    return void 0
+    return {}
   }
 
   /**

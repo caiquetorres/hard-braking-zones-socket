@@ -35,6 +35,8 @@ export class LocationProcessor {
   async save(job: Job<CreateLocationDto>) {
     const completedCount = await job.queue.getCompletedCount()
 
+    Logger.log({ ...job.data })
+
     if (!(completedCount % this.maxCount) && completedCount !== 0) {
       Logger.debug('Saving locations') // TODO: Remove this line after AWS/Heroku tests
 
