@@ -6,9 +6,11 @@ import { InfluxConfigService } from './common/config/influx/influx-config.servic
 
 import { EnvModule } from './env/env.module'
 import { InfluxModule } from './influx/influx.module'
+import { LocationModule } from './location/location.module'
 
 @Module({
   imports: [
+    LocationModule,
     EnvModule.forRoot({
       envFilePath: ['.env'],
     }),

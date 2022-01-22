@@ -12,15 +12,6 @@ services:
     ports:
       - ${INFLUXDB_PORT}:8086
 
-  postgres:
-    image: postgres:12.4
-    environment:
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
-      POSTGRES_USER: ${DATABASE_USERNAME}
-      POSTGRES_DB: ${DATABASE_DATABASE}
-    ports:
-      - ${DATABASE_PORT}:5432
-
   redis:
     image: redis
     ports:
