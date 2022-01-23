@@ -1,0 +1,39 @@
+org: caiquetorres
+app: hard-braking-zones
+service: socket
+
+provider:
+  name: aws
+  stage: prod
+  runtime: nodejs14.x
+
+package:
+  exclude:
+    - .git/**
+    - .husky/**
+    - test/**
+    - src/**
+    - e2e/**
+    - README.md
+    - .env*
+    - .eslint*
+    - .commitlintrc.json
+    - .editorconfig
+    - .nvmrc
+    - docker-compose.yml
+    - Procfile
+    - .prettierrc
+    - yarn.lock
+    - package.json
+    - tsconfig.json
+    - tsconfig.build.json
+    - nest-cli.json
+
+functions:
+  socket:
+    handler: dist/lambda.handler
+    name: hard-braking-zones-socket-${sls:stage}
+    events:
+      - websocket: $connect
+      - websocket: $disconnect
+      - websocket: $default
