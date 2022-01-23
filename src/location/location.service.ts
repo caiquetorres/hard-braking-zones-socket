@@ -23,6 +23,12 @@ export class LocationService {
    */
   private readonly maxCount: number
 
+  /**
+   * Property that defines an object that represents the main service
+   * logger.
+   */
+  private readonly logger = new Logger('LocationService')
+
   constructor(
     envService: EnvService,
     private readonly influxService: InfluxService,
@@ -37,11 +43,10 @@ export class LocationService {
    * @param dto defines an object that represents the `location`.
    */
   async saveOne(dto: CreateLocationDto) {
-    Logger.debug({ ...dto })
     this.locations.push(dto)
 
     if (!(this.locations.length % this.maxCount)) {
-      Logger.debug('Saving locations') // TODO: Remove this line after AWS/Heroku tests
+      this.logger.debug('Saving locations') // TODO: Remove this line after AWS/Heroku tests
 
       const l = [...this.locations]
       this.locations = []
