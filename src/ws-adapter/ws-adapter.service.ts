@@ -1,5 +1,5 @@
 import { InjectQueue } from '@nestjs/bull'
-import { Injectable, Type } from '@nestjs/common'
+import { Injectable, Logger, Type } from '@nestjs/common'
 import { WsException } from '@nestjs/websockets'
 
 import { CreateLocationDto } from '../location/dtos/create-location.dto'
@@ -34,9 +34,14 @@ export class WsAdapterService {
    * the `location` object.
    */
   async handleOnMessage(message: string) {
-    const data = JSON.parse(message)
-    const validatedData = this.validate(data, CreateLocationDto)
-    await this.queue.add(validatedData)
+    try {
+      const data = JSON.parse(message)
+      const validatedData = this.validate(data, CreateLocationDto)
+      Logger.debug({ ...validatedData })
+      await this.queue.add(validatedData)
+    } catch (err) {
+      throw new WsException(err)
+    }
   }
 
   /**
@@ -48,7 +53,7 @@ export class WsAdapterService {
    * be used to validate the `data` object.
    * @returns the validated object.
    */
-  private async validate<T extends object>(data: unknown, cls: Type<T>) {
+  private validate<T extends object>(data: unknown, cls: Type<T>) {
     const validatedConfig = plainToClass(cls, data, {
       enableImplicitConversion: true,
     })

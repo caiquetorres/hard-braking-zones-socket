@@ -1,5 +1,12 @@
 import { HttpService } from '@nestjs/axios'
-import { BadRequestException, Inject, Injectable, Logger } from '@nestjs/common'
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  Logger,
+  OnModuleInit,
+} from '@nestjs/common'
+import { WsException } from '@nestjs/websockets'
 
 import { EnvService } from '../env/env.service'
 
@@ -17,7 +24,7 @@ interface Timestamp {
  * behaviours.
  */
 @Injectable()
-export class InfluxService {
+export class InfluxService implements OnModuleInit {
   /**
    * Property that defines an object that represents the influx client.
    */
@@ -36,7 +43,10 @@ export class InfluxService {
     private readonly envService: EnvService,
   ) {
     this.influx = new InfluxDB(influxModuleOptions)
-    this.ping()
+  }
+
+  async onModuleInit() {
+    await this.ping()
   }
 
   /**
@@ -86,7 +96,7 @@ export class InfluxService {
    *
    * @returns an observable related to the ping result.
    */
-  private async ping(): Promise<void> {
+  async ping(): Promise<void> {
     try {
       await lastValueFrom(
         this.httpService.get<void>(this.envService.get('INFLUXDB_URL')),
@@ -95,7 +105,7 @@ export class InfluxService {
       this.logger.error('Unable to connect to the Influx database', err)
       await lastValueFrom(interval(2000))
       this.ping()
-      throw err
+      throw new WsException(err)
     }
   }
 

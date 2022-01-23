@@ -22,7 +22,6 @@ import { WsAdapterModule } from './ws-adapter/ws-adapter.module'
     InfluxModule.forRootAsync({
       useClass: InfluxConfigService,
     }),
-    WsAdapterModule,
   ],
 })
 export class AppModule {}
