@@ -1,14 +1,11 @@
-import { BullModule } from '@nestjs/bull'
 import { Module } from '@nestjs/common'
 
 import { WsAdapterService } from './ws-adapter.service'
 
+import { LocationModule } from '../location/location.module'
+
 @Module({
-  imports: [
-    BullModule.registerQueue({
-      name: 'location',
-    }),
-  ],
+  imports: [LocationModule],
   providers: [WsAdapterService],
 })
 export class WsAdapterModule {}

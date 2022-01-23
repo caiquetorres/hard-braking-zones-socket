@@ -1,10 +1,10 @@
-import { InjectQueue } from '@nestjs/bull'
 import { Injectable, Logger, Type } from '@nestjs/common'
 import { WsException } from '@nestjs/websockets'
 
 import { CreateLocationDto } from '../location/dtos/create-location.dto'
 
-import { Queue } from 'bull'
+import { LocationService } from '../location/location.service'
+
 import { plainToClass } from 'class-transformer'
 import { validateSync } from 'class-validator'
 
@@ -13,10 +13,7 @@ import { validateSync } from 'class-validator'
  */
 @Injectable()
 export class WsAdapterService {
-  constructor(
-    @InjectQueue('location')
-    private readonly queue: Queue,
-  ) {}
+  constructor(private readonly locationService: LocationService) {}
 
   handleOnConnect() {
     return {}
@@ -38,7 +35,7 @@ export class WsAdapterService {
       const data = JSON.parse(message)
       const validatedData = this.validate(data, CreateLocationDto)
       Logger.debug({ ...validatedData })
-      await this.queue.add(validatedData)
+      await this.locationService.saveOne(validatedData)
     } catch (err) {
       throw new WsException(err)
     }

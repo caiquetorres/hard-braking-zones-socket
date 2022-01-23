@@ -1,4 +1,3 @@
-import { InjectQueue } from '@nestjs/bull'
 import { UsePipes, ValidationPipe } from '@nestjs/common'
 import {
   MessageBody,
@@ -8,7 +7,7 @@ import {
 
 import { CreateLocationDto } from './dtos/create-location.dto'
 
-import { Queue } from 'bull'
+import { LocationService } from './location.service'
 
 /**
  * Gateway responsible for dealing with the velocity data receiving.
@@ -17,10 +16,7 @@ import { Queue } from 'bull'
   cors: true,
 })
 export class LocationGateway {
-  constructor(
-    @InjectQueue('location')
-    private readonly queue: Queue,
-  ) {}
+  constructor(private readonly locationService: LocationService) {}
 
   /**
    * Method that creates a new velocity point in the influx database.
@@ -37,6 +33,6 @@ export class LocationGateway {
     @MessageBody()
     dto: CreateLocationDto,
   ): Promise<void> {
-    await this.queue.add(dto)
+    await this.locationService.saveOne(dto)
   }
 }
