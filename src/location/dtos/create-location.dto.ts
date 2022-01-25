@@ -1,13 +1,9 @@
-import { IsDefined, IsNumber, IsString, IsUUID } from 'class-validator'
+import { IsDefined, IsNumber, IsString } from 'class-validator'
 
 /**
  * Dto that represents the data sent to the backend to perform the create.
  */
 export class CreateLocationDto {
-  @IsDefined({ message: 'It is required to send the identifier' })
-  @IsUUID('4', { message: 'It is required to send a valid UUID' })
-  identifier: string
-
   @IsDefined({ message: 'It is required to send the timestamp' })
   @IsNumber({}, { message: 'It is required to send a valid timestamp' })
   timestamp: number
