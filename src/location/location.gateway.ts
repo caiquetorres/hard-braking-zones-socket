@@ -12,9 +12,7 @@ import { LocationService } from './location.service'
 /**
  * Gateway responsible for dealing with the velocity data receiving.
  */
-@WebSocketGateway({
-  cors: true,
-})
+@WebSocketGateway(8080)
 export class LocationGateway {
   constructor(private readonly locationService: LocationService) {}
 

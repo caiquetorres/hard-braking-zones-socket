@@ -17,7 +17,7 @@ export class EnvService {
    * @param key defines the variable key.
    * @returns the variable value.
    */
-  get<T extends keyof EnvVariables>(key: T): EnvVariables[T] {
+  get<T extends keyof EnvVariables>(key: T) {
     return this.configService.get<EnvVariables[T]>(key)
   }
 }

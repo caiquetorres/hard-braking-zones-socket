@@ -38,7 +38,7 @@ export class SentryFilter extends BaseWsExceptionFilter {
    * exception.
    * @param host defines and object that represents the host arguments.
    */
-  catch(exception: HttpException, host: ArgumentsHost): void {
+  catch(exception: HttpException, host: ArgumentsHost) {
     if (this.sentryEnabled) {
       Sentry.captureException(exception)
     }

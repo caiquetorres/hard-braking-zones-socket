@@ -55,7 +55,7 @@ export class InfluxService implements OnModuleInit {
    * @param value defines the new point data.
    * @returns an observable related to the created point.
    */
-  async createOne<T extends Timestamp>(value: T): Promise<void> {
+  async createOne<T extends Timestamp>(value: T) {
     const writeApi = this.influx.getWriteApi(
       this.envService.get('INFLUXDB_ORG'),
       this.envService.get('INFLUXDB_BUCKET'),
@@ -70,7 +70,7 @@ export class InfluxService implements OnModuleInit {
    * @param values defines an array of objects that represents the new
    * point datas.
    */
-  async createMany<T extends Timestamp>(values: T[]): Promise<void> {
+  async createMany<T extends Timestamp>(values: T[]) {
     const writeApi = this.influx.getWriteApi(
       this.envService.get('INFLUXDB_ORG'),
       this.envService.get('INFLUXDB_BUCKET'),
@@ -85,7 +85,7 @@ export class InfluxService implements OnModuleInit {
    * @param query defines a string the represents the `Flux Query`
    * @returns an observable related to the found data.
    */
-  async query<T>(query: string): Promise<T[]> {
+  async query<T>(query: string) {
     return this.influx
       .getQueryApi(this.envService.get('INFLUXDB_ORG'))
       .collectRows<T>(query)
@@ -96,7 +96,7 @@ export class InfluxService implements OnModuleInit {
    *
    * @returns an observable related to the ping result.
    */
-  async ping(): Promise<void> {
+  async ping() {
     try {
       await lastValueFrom(
         this.httpService.get<void>(this.envService.get('INFLUXDB_URL')),
@@ -115,7 +115,7 @@ export class InfluxService implements OnModuleInit {
    * @param value defines the new poisnt data.
    * @returns the created point.
    */
-  private createPoint<T extends Timestamp>(value: T): Point {
+  private createPoint<T extends Timestamp>(value: T) {
     const point = new Point(this.envService.get('INFLUXDB_MEASUREMENT_NAME'))
 
     const { timestamp, ...rest } = value

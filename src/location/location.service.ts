@@ -61,10 +61,7 @@ export class LocationService {
    * @param dtos defines an array that contains objects and each one of
    * them represents the the point data
    */
-  createMany(dtos: CreateLocationDto[]): Promise<void> {
-    for (const dto of dtos) {
-      delete dto.identifier
-    }
+  createMany(dtos: CreateLocationDto[]) {
     return this.influxService.createMany(dtos)
   }
 }

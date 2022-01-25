@@ -1,5 +1,5 @@
 import { Injectable, Type } from '@nestjs/common'
-import { WsException } from '@nestjs/websockets'
+import { WsException, WsResponse } from '@nestjs/websockets'
 
 import { CreateLocationDto } from '../location/dtos/create-location.dto'
 
@@ -32,8 +32,8 @@ export class WsAdapterService {
    */
   async handleOnMessage(message: string) {
     try {
-      const data = JSON.parse(message)
-      const validatedData = this.validate(data, CreateLocationDto)
+      const response = JSON.parse(message) as WsResponse<CreateLocationDto>
+      const validatedData = this.validate(response.data, CreateLocationDto)
       await this.locationService.saveOne(validatedData)
     } catch (err) {
       throw new WsException(err)

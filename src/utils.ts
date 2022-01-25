@@ -11,7 +11,7 @@ import { SentryFilter } from './common/filters/sentry/sentry.filter'
  *
  * @returns an object that represents the application.
  */
-export async function createApp(): Promise<INestApplication> {
+export async function createApp() {
   const app = await NestFactory.create(AppModule)
 
   const envService = app.get(EnvService)
@@ -27,6 +27,6 @@ export async function createApp(): Promise<INestApplication> {
  * @param envService defines an object that represents the application
  * environment service.
  */
-function setupFilters(app: INestApplication, envService: EnvService): void {
+function setupFilters(app: INestApplication, envService: EnvService) {
   app.useGlobalFilters(new SentryFilter(envService))
 }
